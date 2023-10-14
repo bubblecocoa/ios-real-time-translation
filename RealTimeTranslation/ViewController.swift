@@ -6,67 +6,69 @@
 //
 
 import UIKit
+import VisionKit
 
 final class ViewController: UIViewController {
-    let mainStackView: UIStackView = {
+    private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 8
         
-        stackView.backgroundColor = .systemRed
+        stackView.backgroundColor = .black
         
         return stackView
     }()
-    let cameraArea: UIView = {
-        let view = UIView()
-        
-        view.backgroundColor = .systemGreen
-        
-        return view
+    private let dataScanner: DataScannerViewController = {
+        let scanner = DataScannerViewController(
+            recognizedDataTypes: [
+                .text()
+            ],
+            recognizesMultipleItems: true,
+            isGuidanceEnabled: true,
+            isHighlightingEnabled: true
+        )
+
+        return scanner
     }()
-    let languageStackView: UIStackView = {
+    private let languageStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = 16
         stackView.distribution = .fillEqually
         
-        stackView.backgroundColor = .systemBlue
-        
         return stackView
     }()
-    let fromLanguageButton: UIButton = {
+    private let fromLanguageButton: UIButton = {
         let button = UIButton()
         button.setTitle("영어", for: .normal)
-        button.backgroundColor = .systemCyan
+        button.backgroundColor = .systemGray
         
         return button
     }()
-    let toTranslateLanguageButton: UIButton = {
+    private let toTranslateLanguageButton: UIButton = {
         let button = UIButton()
         button.setTitle("한국어", for: .normal)
-        button.backgroundColor = .systemMint
+        button.backgroundColor = .systemGray
         
         return button
     }()
-    let buttonStackView: UIStackView = {
+    private let buttonStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .equalCentering
         
-        stackView.backgroundColor = .systemYellow
-        
         return stackView
     }()
-    let emptyButton: UIButton = {
+    private let emptyButton: UIButton = {
         let button = UIButton()
         
         return button
     }()
-    let shotButton: UIButton = {
+    private let shotButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 70 / 2
         button.setImage(UIImage(systemName: "circle.inset.filled"), for: .normal)
@@ -75,7 +77,7 @@ final class ViewController: UIViewController {
         
         return button
     }()
-    let flashButton: UIButton = {
+    private let flashButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 50 / 2
         button.setImage(UIImage(systemName: "flashlight.on.fill"), for: .normal)
@@ -90,10 +92,12 @@ final class ViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
+        setDataScanner()
     }
 
     private func setUI() {
         // view
+        view.backgroundColor = .black
         view.addSubview(mainStackView)
         
         // mainStackView
@@ -105,25 +109,25 @@ final class ViewController: UIViewController {
         ])
         
         [
-            cameraArea,
+            dataScanner.view,
             languageStackView,
             buttonStackView
         ].forEach {
             mainStackView.addArrangedSubview($0)
         }
         
-        // cameraArea
+        // dataScanner
         NSLayoutConstraint.activate([
-            cameraArea.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            cameraArea.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-            cameraArea.topAnchor.constraint(equalTo: mainStackView.topAnchor),
-            cameraArea.bottomAnchor.constraint(equalTo: languageStackView.topAnchor)
+            dataScanner.view.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            dataScanner.view.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            dataScanner.view.topAnchor.constraint(equalTo: mainStackView.topAnchor),
+            dataScanner.view.bottomAnchor.constraint(equalTo: languageStackView.topAnchor, constant: -16)
         ])
         
         // languageStackView
         NSLayoutConstraint.activate([
-            languageStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: 32),
-            languageStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -32),
+            languageStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: 16),
+            languageStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -16),
             languageStackView.heightAnchor.constraint(equalToConstant: 50)
         ])
         
@@ -138,7 +142,7 @@ final class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             buttonStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: 32),
             buttonStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -32),
-            buttonStackView.topAnchor.constraint(equalTo: languageStackView.bottomAnchor),
+            buttonStackView.topAnchor.constraint(equalTo: languageStackView.bottomAnchor, constant: 16),
             buttonStackView.bottomAnchor.constraint(equalTo: mainStackView.bottomAnchor),
             buttonStackView.heightAnchor.constraint(equalToConstant: 90)
         ])
@@ -160,5 +164,66 @@ final class ViewController: UIViewController {
             flashButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
+    
+    private func setDataScanner() {
+        dataScanner.delegate = self
+        
+        do {
+            try dataScanner.startScanning()
+        } catch {
+            print("데이터 스캔 시작에 실패했습니다. - \(error)")
+        }
+    }
+    
+    private func drawLabels(using items: [RecognizedItem]) {
+        dataScanner.view.subviews.forEach {
+            $0.removeFromSuperview()
+        }
+        
+        items.forEach { item in
+            switch item {
+            case .text(let text):
+                let bounds = text.bounds
+                let transcript = text.transcript
+                let label = UILabel(frame: CGRect(
+                    origin: bounds.bottomLeft,
+                    size: CGSize(
+                        width: bounds.topRight.x - bounds.topLeft.x,
+                        height: bounds.topRight.y - bounds.bottomRight.y
+                    )
+                ))
+                
+                label.backgroundColor = .cyan
+                label.text = transcript
+                label.textColor = .black
+                label.numberOfLines = 0
+                
+                dataScanner.view.addSubview(label)
+            default:
+                print("Item is not text.")
+            }
+        }
+    }
 }
 
+extension ViewController: DataScannerViewControllerDelegate {
+    func dataScanner(
+        _ dataScanner: DataScannerViewController,
+        didAdd addedItems: [RecognizedItem],
+        allItems: [RecognizedItem]
+    ) {
+        drawLabels(using: allItems)
+    }
+
+    func dataScanner(
+        _ dataScanner: DataScannerViewController,
+        didTapOn item: RecognizedItem
+    ) {
+        switch item {
+        case .text(let text):
+            print("text: \(text.transcript)")
+        default:
+            print("unexpected item")
+        }
+    }
+}
