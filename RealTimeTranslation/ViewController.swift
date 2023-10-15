@@ -195,14 +195,97 @@ final class ViewController: UIViewController {
                 
                 label.backgroundColor = .cyan
                 label.text = transcript
+                label.textAlignment = .center
                 label.textColor = .black
                 label.numberOfLines = 0
+                
+                detectLanguage(of: transcript) { [weak self] languageCode in
+                    self?.translateText(
+                        of: transcript,
+                        sourceLanguage: languageCode,
+                        targetLanguage: "ko"
+                    ) { result in
+                        DispatchQueue.main.async {
+                            label.text = result.message.result.translatedText
+                        }
+                    }
+                }
                 
                 dataScanner.view.addSubview(label)
             default:
                 print("Item is not text.")
             }
         }
+    }
+    
+    // 언어 번역
+    private func translateText(
+        of text: String,
+        sourceLanguage: String = "en",
+        targetLanguage: String = "ko",
+        complition: @escaping (PapagoTranslation) -> Void
+    ) {
+        let parameters = "source=\(sourceLanguage)&target=\(targetLanguage)&text=\(text)"
+        let postData =  parameters.data(using: .utf8)
+
+        var request = URLRequest(url: URL(string: "https://openapi.naver.com/v1/papago/n2mt")!, timeoutInterval: Double.infinity)
+        request.addValue("aEpCXgtaj9I8W8FmtPTy", forHTTPHeaderField: "X-Naver-Client-Id")
+        request.addValue("9gsVXE0aSl", forHTTPHeaderField: "X-Naver-Client-Secret")
+        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        request.httpMethod = "POST"
+        request.httpBody = postData
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                print(String(describing: error))
+                return
+            }
+            
+            let jsonDecoder = JSONDecoder()
+            
+            do {
+                let translation = try jsonDecoder.decode(PapagoTranslation.self, from: data)
+                print("번역 결과 : \(translation.message.result.translatedText)")
+                complition(translation)
+            } catch {
+                print(error)
+            }
+        }.resume()
+    }
+    
+    // 언어 감지
+    private func detectLanguage(
+        of text: String,
+        complition: @escaping (String) -> Void
+    ) {
+        let parameters = "query=What%20is%20the%20language%20of%20this%20sentence%3F"
+        let postData =  parameters.data(using: .utf8)
+
+        var request = URLRequest(url: URL(string: "https://openapi.naver.com/v1/papago/detectLangs")!, timeoutInterval: Double.infinity)
+        request.addValue(Bundle.main.naverClientId, forHTTPHeaderField: "X-Naver-Client-Id")
+        request.addValue(Bundle.main.naverClientSecret, forHTTPHeaderField: "X-Naver-Client-Secret")
+        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        request.httpMethod = "POST"
+        request.httpBody = postData
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data else {
+                print(String(describing: error))
+                return
+            }
+
+            let jsonDecoder = JSONDecoder()
+            
+            do {
+                let detectLanguage = try jsonDecoder.decode(PapagoDetectLanguage.self, from: data)
+                print("번역 결과 : \(detectLanguage.languageCode)")
+                complition(detectLanguage.languageCode)
+            } catch {
+                print(error)
+            }
+        }.resume()
     }
 }
 
@@ -225,5 +308,33 @@ extension ViewController: DataScannerViewControllerDelegate {
         default:
             print("unexpected item")
         }
+    }
+}
+
+struct PapagoDetectLanguage: Decodable {
+    let languageCode: String    // 감지된 언어
+    
+    private enum CodingKeys: String, CodingKey {
+        case languageCode = "langCode"
+    }
+}
+
+struct PapagoTranslation: Decodable {
+    let message: PapagoTranslationMessage
+}
+
+struct PapagoTranslationMessage: Decodable {
+    let result: PapagoTranslationResult
+}
+
+struct PapagoTranslationResult: Decodable {
+    let sourceLanguageType: String  // 번역할 원본 언어의 언어 코드
+    let targetLanguageType: String  // 번역한 목적 언어의 언어 코드
+    let translatedText: String      // 번역된 텍스트
+    
+    private enum CodingKeys: String, CodingKey {
+        case sourceLanguageType = "srcLangType"
+        case targetLanguageType = "tarLangType"
+        case translatedText
     }
 }
