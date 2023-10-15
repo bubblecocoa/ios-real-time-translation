@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TranslationViewController.swift
 //  RealTimeTranslation
 //
 //  Created by BMO on 2023/10/11.
@@ -8,7 +8,7 @@
 import UIKit
 import VisionKit
 
-final class ViewController: UIViewController {
+final class TranslationViewController: UIViewController {
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -289,7 +289,7 @@ final class ViewController: UIViewController {
     }
 }
 
-extension ViewController: DataScannerViewControllerDelegate {
+extension TranslationViewController: DataScannerViewControllerDelegate {
     func dataScanner(
         _ dataScanner: DataScannerViewController,
         didAdd addedItems: [RecognizedItem],
