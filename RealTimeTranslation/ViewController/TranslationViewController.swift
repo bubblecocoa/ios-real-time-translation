@@ -210,11 +210,13 @@ final class TranslationViewController: UIViewController {
             )
         ))
         
-        label.backgroundColor = .cyan
+        label.backgroundColor = UIColor.white.withAlphaComponent(0.7)
         label.text = transcript
         label.textAlignment = .center
         label.textColor = .black
         label.numberOfLines = 0
+        label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
+        label.adjustsFontSizeToFitWidth = true
         
         applyTranslation(transcript, to: label)
         dataScanner.addSubview(label)
