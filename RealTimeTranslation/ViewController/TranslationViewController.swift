@@ -12,6 +12,7 @@ final class TranslationViewController: UIViewController {
     private let translationService: TranslationService
     private var flashState: Bool = false
     private var scanningState: Bool = true
+    private var targetLanguage: PapagoTranslationLanguage = .ko
     
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -54,10 +55,19 @@ final class TranslationViewController: UIViewController {
 
         return button
     }()
-    private let toTranslateLanguageButton: UIButton = {
+    private lazy var toTranslateLanguageButton: UIButton = {
         let button = UIButton(configuration: .filled())
-        button.tintColor = .systemGray
-        button.setTitle("한국어", for: .normal)
+        button.setTitle(PapagoTranslationLanguage.ko.notation, for: .normal)
+        button.menu = UIMenu(children: PapagoTranslationLanguage.allCases.map { language in
+            UIAction(
+                title: language.notation,
+                handler: { [weak self] _ in
+                    self?.targetLanguage = language
+                    button.setTitle(language.notation, for: .normal)
+                }
+            )
+        }.reversed())
+        button.showsMenuAsPrimaryAction = true
         
         return button
     }()
@@ -204,6 +214,8 @@ final class TranslationViewController: UIViewController {
         label.numberOfLines = 0
         label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         label.adjustsFontSizeToFitWidth = true
+        label.layer.cornerRadius = label.frame.size.height / 8
+        label.clipsToBounds = true
         
         applyTranslation(transcript, to: label)
         dataScanner.addSubview(label)

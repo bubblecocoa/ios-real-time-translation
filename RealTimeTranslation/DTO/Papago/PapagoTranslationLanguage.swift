@@ -5,7 +5,7 @@
 //  Created by BMO on 2023/10/16.
 //
 
-enum PapagoTranslationLanguage: String, Decodable {
+enum PapagoTranslationLanguage: String, Decodable, CaseIterable {
     case ko                 // 한국어
     case en                 // 영어
     case ja                 // 일본어
@@ -34,5 +34,36 @@ enum PapagoTranslationLanguage: String, Decodable {
         case es
         case it
         case fr
+    }
+    
+    var notation: String {
+        switch self {
+        case .ko:
+            return "한국어"
+        case .en:
+            return "English"
+        case .ja:
+            return "日本語"
+        case .zhCN:
+            return "簡體字"
+        case .zhTW:
+            return "繁体字"
+        case .vi:
+            return "Tiếng Việt"
+        case .id:
+            return "Bahasa Indonesia"
+        case .th:
+            return "ภาษาไทย"
+        case .de:
+            return "Deutsch"
+        case .ru:
+            return "Русский"
+        case .es:
+            return "Español"
+        case .it:
+            return "Italiano"
+        case .fr:
+            return "Français"
+        }
     }
 }
