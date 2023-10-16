@@ -186,47 +186,42 @@ final class TranslationViewController: UIViewController {
         }
     }
     
-    private func drawLabels(using items: [RecognizedItem]) {
-        dataScanner.view.subviews.forEach {
-            $0.removeFromSuperview()
-        }
+    private func showTranslation(using items: [RecognizedItem]) {
+        dataScanner.removeAllSubviews()
         
         items.forEach { item in
             switch item {
             case .text(let text):
-                let bounds = text.bounds
-                let transcript = text.transcript
-                let label = UILabel(frame: CGRect(
-                    origin: bounds.bottomLeft,
-                    size: CGSize(
-                        width: bounds.topRight.x - bounds.topLeft.x,
-                        height: bounds.topRight.y - bounds.bottomRight.y
-                    )
-                ))
-                
-                label.backgroundColor = .cyan
-                label.text = transcript
-                label.textAlignment = .center
-                label.textColor = .black
-                label.numberOfLines = 0
-                
-                translationService.detectLanguage(of: transcript) { [weak self] languageCode in
-                    self?.translationService.translate(
-                        transcript,
-                        sourceLanguage: languageCode,
-                        targetLanguage: "ko"
-                    ) { result in
-                        DispatchQueue.main.async {
-                            label.text = result.message.result.translatedText
-                        }
-                    }
-                }
-                
-                dataScanner.view.addSubview(label)
+                drawLabels(text)
             default:
                 print("Item is not text.")
             }
         }
+    }
+    
+    private func drawLabels(_ text: RecognizedItem.Text) {
+        let bounds = text.bounds
+        let transcript = text.transcript
+        let label = UILabel(frame: CGRect(
+            origin: bounds.bottomLeft,
+            size: CGSize(
+                width: bounds.topRight.x - bounds.topLeft.x,
+                height: bounds.topRight.y - bounds.bottomRight.y
+            )
+        ))
+        
+        label.backgroundColor = .cyan
+        label.text = transcript
+        label.textAlignment = .center
+        label.textColor = .black
+        label.numberOfLines = 0
+        
+        applyTranslation(transcript, to: label)
+        dataScanner.addSubview(label)
+    }
+    
+    private func applyTranslation(_ transcript: String, to label: UILabel) {
+        translationService.applyTranslation(transcript, to: label)
     }
 }
 
@@ -236,7 +231,7 @@ extension TranslationViewController: DataScannerViewControllerDelegate {
         didAdd addedItems: [RecognizedItem],
         allItems: [RecognizedItem]
     ) {
-        drawLabels(using: allItems)
+        showTranslation(using: allItems)
     }
 
     func dataScanner(

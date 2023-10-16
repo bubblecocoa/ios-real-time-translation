@@ -5,11 +5,28 @@
 //  Created by BMO on 2023/10/16.
 //
 
-import Foundation
+import UIKit
 
 final class TranslationService {
+    func applyTranslation(
+        _ transcript: String,
+        to label: UILabel
+    ) {
+        detectLanguage(of: transcript) { [weak self] languageCode in
+            self?.translate(
+                transcript,
+                sourceLanguage: languageCode,
+                targetLanguage: "ko"
+            ) { result in
+                DispatchQueue.main.async {
+                    label.text = result.message.result.translatedText
+                }
+            }
+        }
+    }
+    
     // 언어 번역
-    func translate(
+    private func translate(
         _ text: String,
         sourceLanguage: String = "en",
         targetLanguage: String = "ko",
@@ -61,7 +78,7 @@ final class TranslationService {
     }
     
     // 언어 감지
-    func detectLanguage(
+    private func detectLanguage(
         of text: String,
         complition: @escaping (String) -> Void
     ) {
