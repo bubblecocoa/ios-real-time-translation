@@ -17,6 +17,7 @@
 		CB5CB8012ADBE58500B735C3 /* Bundle+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CB8002ADBE58500B735C3 /* Bundle+.swift */; };
 		CB5CB80A2ADC200D00B735C3 /* PapagoTranslation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CB8092ADC200D00B735C3 /* PapagoTranslation.swift */; };
 		CB5CB80C2ADC203C00B735C3 /* PapagoDetectLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CB80B2ADC203C00B735C3 /* PapagoDetectLanguage.swift */; };
+		CB5CB8142ADC495F00B735C3 /* NaverAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CB8132ADC495F00B735C3 /* NaverAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		CB5CB8002ADBE58500B735C3 /* Bundle+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+.swift"; sourceTree = "<group>"; };
 		CB5CB8092ADC200D00B735C3 /* PapagoTranslation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapagoTranslation.swift; sourceTree = "<group>"; };
 		CB5CB80B2ADC203C00B735C3 /* PapagoDetectLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapagoDetectLanguage.swift; sourceTree = "<group>"; };
+		CB5CB8132ADC495F00B735C3 /* NaverAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				CB5CB8032ADC1ED200B735C3 /* ViewController */,
 				CB5CB8072ADC1FA400B735C3 /* DTO */,
 				CB5CB8042ADC1EE800B735C3 /* View */,
+				CB5CB8122ADC492F00B735C3 /* NameSpace */,
 				CB5CB8052ADC1F1700B735C3 /* Extension */,
 				CB5CB8062ADC1F3000B735C3 /* Resource */,
 			);
@@ -133,6 +136,14 @@
 				CB5CB80B2ADC203C00B735C3 /* PapagoDetectLanguage.swift */,
 			);
 			path = Papago;
+			sourceTree = "<group>";
+		};
+		CB5CB8122ADC492F00B735C3 /* NameSpace */ = {
+			isa = PBXGroup;
+			children = (
+				CB5CB8132ADC495F00B735C3 /* NaverAPI.swift */,
+			);
+			path = NameSpace;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,6 +218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB5CB8142ADC495F00B735C3 /* NaverAPI.swift in Sources */,
 				CB5CB78D2AD6DE4E00B735C3 /* TranslationViewController.swift in Sources */,
 				CB5CB8012ADBE58500B735C3 /* Bundle+.swift in Sources */,
 				CB5CB80C2ADC203C00B735C3 /* PapagoDetectLanguage.swift in Sources */,
