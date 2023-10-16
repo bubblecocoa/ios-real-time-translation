@@ -9,7 +9,9 @@ import UIKit
 import VisionKit
 
 final class TranslationViewController: UIViewController {
-    let translationService: TranslationService
+    private let translationService: TranslationService
+    private var flashState: Bool = false
+    private var scanningState: Bool = false
     
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -33,60 +35,40 @@ final class TranslationViewController: UIViewController {
 
         return scanner
     }()
-    private let languageStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.spacing = 16
-        stackView.distribution = .fillEqually
-        
-        return stackView
-    }()
-    private let fromLanguageButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("영어", for: .normal)
-        button.backgroundColor = .systemGray
-        
-        return button
-    }()
-    private let toTranslateLanguageButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("한국어", for: .normal)
-        button.backgroundColor = .systemGray
-        
-        return button
-    }()
     private let buttonStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .equalCentering
+        stackView.spacing = 16
+        stackView.distribution = .fill
         
         return stackView
     }()
-    private let emptyButton: UIButton = {
-        let button = UIButton()
+    private let toggleFlashButton: UIButton = {
+        let button = UIButton(configuration: .filled())
+        button.tintColor = .black
+        button.setImage(UIImage(systemName: "bolt.slash.fill"), for: .normal)
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1
+        button.clipsToBounds = true
+
+        return button
+    }()
+    private let toTranslateLanguageButton: UIButton = {
+        let button = UIButton(configuration: .filled())
+        button.tintColor = .systemGray
+        button.setTitle("한국어", for: .normal)
         
         return button
     }()
-    private let shotButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 70 / 2
-        button.setImage(UIImage(systemName: "circle.inset.filled"), for: .normal)
-        button.tintColor = .white
-        button.backgroundColor = .systemGray2
-        
-        return button
-    }()
-    private let flashButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 50 / 2
-        button.setImage(UIImage(systemName: "flashlight.on.fill"), for: .normal)
-        button.tintColor = .white
-        
-        button.backgroundColor = .systemGray2
-        
+    private let toggleScanningButton: UIButton = {
+        let button = UIButton(configuration: .filled())
+        button.tintColor = .black
+        button.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1
+        button.clipsToBounds = true
+
         return button
     }()
     
@@ -104,6 +86,13 @@ final class TranslationViewController: UIViewController {
         
         setUI()
         setDataScanner()
+        setButtonAction()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        setButtonCornerRadius()
     }
 
     private func setUI() {
@@ -121,7 +110,6 @@ final class TranslationViewController: UIViewController {
         
         [
             dataScanner.view,
-            languageStackView,
             buttonStackView
         ].forEach {
             mainStackView.addArrangedSubview($0)
@@ -132,47 +120,28 @@ final class TranslationViewController: UIViewController {
             dataScanner.view.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             dataScanner.view.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
             dataScanner.view.topAnchor.constraint(equalTo: mainStackView.topAnchor),
-            dataScanner.view.bottomAnchor.constraint(equalTo: languageStackView.topAnchor, constant: -16)
+            dataScanner.view.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor, constant: -16)
         ])
-        
-        // languageStackView
-        NSLayoutConstraint.activate([
-            languageStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: 16),
-            languageStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -16),
-            languageStackView.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        
-        [
-            fromLanguageButton,
-            toTranslateLanguageButton
-        ].forEach {
-            languageStackView.addArrangedSubview($0)
-        }
         
         // buttonStackView
         NSLayoutConstraint.activate([
-            buttonStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: 32),
-            buttonStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -32),
-            buttonStackView.topAnchor.constraint(equalTo: languageStackView.bottomAnchor, constant: 16),
+            buttonStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: 16),
+            buttonStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -16),
             buttonStackView.bottomAnchor.constraint(equalTo: mainStackView.bottomAnchor),
-            buttonStackView.heightAnchor.constraint(equalToConstant: 90)
+            buttonStackView.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         [
-            emptyButton,
-            shotButton,
-            flashButton
+            toggleFlashButton,
+            toTranslateLanguageButton,
+            toggleScanningButton
         ].forEach {
             buttonStackView.addArrangedSubview($0)
         }
         
         NSLayoutConstraint.activate([
-            emptyButton.widthAnchor.constraint(equalToConstant: 50),
-            emptyButton.heightAnchor.constraint(equalToConstant: 50),
-            shotButton.widthAnchor.constraint(equalToConstant: 70),
-            shotButton.heightAnchor.constraint(equalToConstant: 70),
-            flashButton.widthAnchor.constraint(equalToConstant: 50),
-            flashButton.heightAnchor.constraint(equalToConstant: 50)
+            toggleFlashButton.widthAnchor.constraint(equalTo: toggleFlashButton.heightAnchor, multiplier: 1),
+            toggleScanningButton.widthAnchor.constraint(equalTo: toggleScanningButton.heightAnchor, multiplier: 1)
         ])
     }
     
@@ -184,6 +153,24 @@ final class TranslationViewController: UIViewController {
         } catch {
             print("데이터 스캔 시작에 실패했습니다. - \(error)")
         }
+    }
+    
+    private func setButtonAction() {
+        let toggleFlashAction = UIAction { [weak self] _ in
+            self?.toggleFlash()
+        }
+        
+        let toggleScanningAction = UIAction { [weak self] _ in
+            self?.toggleScanning()
+        }
+        
+        toggleFlashButton.addAction(toggleFlashAction, for: .touchUpInside)
+        toggleScanningButton.addAction(toggleScanningAction, for: .touchUpInside)
+    }
+    
+    private func setButtonCornerRadius() {
+        toggleFlashButton.layer.cornerRadius = toggleFlashButton.frame.width / 2
+        toggleScanningButton.layer.cornerRadius = toggleScanningButton.frame.width / 2
     }
     
     private func showTranslation(using items: [RecognizedItem]) {
@@ -224,6 +211,28 @@ final class TranslationViewController: UIViewController {
     
     private func applyTranslation(_ transcript: String, to label: UILabel) {
         translationService.applyTranslation(transcript, to: label)
+    }
+    
+    private func toggleFlash() {
+        flashState.toggle()
+        
+        if flashState {
+            toggleFlashButton.setImage(UIImage(systemName: "bolt.fill"), for: .normal)
+        } else {
+            toggleFlashButton.setImage(UIImage(systemName: "bolt.slash.fill"), for: .normal)
+        }
+    }
+    
+    private func toggleScanning() {
+        scanningState.toggle()
+        
+        if scanningState {
+            toggleScanningButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+            dataScanner.stopScanning()
+        } else {
+            toggleScanningButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+            try? dataScanner.startScanning()
+        }
     }
 }
 
