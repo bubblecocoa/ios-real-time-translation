@@ -63,6 +63,8 @@ final class TranslationViewController: UIViewController {
                 title: language.notation,
                 handler: { [weak self] _ in
                     self?.targetLanguage = language
+                    self?.stopScanning()
+                    self?.startScanning()
                     button.setTitle(language.notation, for: .normal)
                 }
             )
@@ -222,7 +224,7 @@ final class TranslationViewController: UIViewController {
     }
     
     private func applyTranslation(_ transcript: String, to label: UILabel) {
-        translationService.applyTranslation(transcript, to: label)
+        translationService.applyTranslation(transcript, targetLanguage: targetLanguage, to: label)
     }
     
     private func toggleFlash() {

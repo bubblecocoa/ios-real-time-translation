@@ -10,13 +10,14 @@ import UIKit
 final class TranslationService {
     func applyTranslation(
         _ transcript: String,
+        targetLanguage: PapagoTranslationLanguage,
         to label: UILabel
     ) {
-        detectLanguage(of: transcript) { [weak self] languageCode in
+        detectLanguage(of: transcript) { [weak self] sourceLanguage in
             self?.translate(
                 transcript,
-                sourceLanguage: languageCode,
-                targetLanguage: .ko
+                sourceLanguage: sourceLanguage,
+                targetLanguage: targetLanguage
             ) { result in
                 DispatchQueue.main.async {
                     label.text = result.message.result.translatedText
