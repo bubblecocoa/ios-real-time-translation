@@ -6,7 +6,7 @@
 //
 
 struct PapagoDetectLanguage: Decodable {
-    let languageCode: String    // 감지된 언어
+    let languageCode: PapagoTranslationLanguage    // 감지된 언어
     
     private enum CodingKeys: String, CodingKey {
         case languageCode = "langCode"

@@ -16,7 +16,7 @@ final class TranslationService {
             self?.translate(
                 transcript,
                 sourceLanguage: languageCode,
-                targetLanguage: "ko"
+                targetLanguage: .ko
             ) { result in
                 DispatchQueue.main.async {
                     label.text = result.message.result.translatedText
@@ -25,11 +25,11 @@ final class TranslationService {
         }
     }
     
-    // 언어 번역
+    // 번역
     private func translate(
         _ text: String,
-        sourceLanguage: String = "en",
-        targetLanguage: String = "ko",
+        sourceLanguage: PapagoTranslationLanguage,
+        targetLanguage: PapagoTranslationLanguage,
         complition: @escaping (PapagoTranslation) -> Void
     ) {
         var components = URLComponents()
@@ -38,8 +38,8 @@ final class TranslationService {
         components.path = NaverAPI.translatePath
 
         let query = [
-            "source" : sourceLanguage,
-            "target" : targetLanguage,
+            "source" : sourceLanguage.rawValue,
+            "target" : targetLanguage.rawValue,
             "text" : text
         ]
 
@@ -80,7 +80,7 @@ final class TranslationService {
     // 언어 감지
     private func detectLanguage(
         of text: String,
-        complition: @escaping (String) -> Void
+        complition: @escaping (PapagoTranslationLanguage) -> Void
     ) {
         var components = URLComponents()
         components.scheme = NaverAPI.scheme
@@ -117,6 +117,7 @@ final class TranslationService {
             
             do {
                 let detectLanguage = try jsonDecoder.decode(PapagoDetectLanguage.self, from: data)
+                // FIXME: 감지 언어 18개, 번역 언어 13개. 5가지 차이에 의해 에러가 발생할 수 있음.
                 print("감지 언어 : \(detectLanguage.languageCode)")
                 complition(detectLanguage.languageCode)
             } catch {

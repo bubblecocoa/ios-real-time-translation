@@ -20,6 +20,7 @@
 		CB5CB8112ADC456600B735C3 /* TranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CB8102ADC456600B735C3 /* TranslationService.swift */; };
 		CB5CB8142ADC495F00B735C3 /* NaverAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CB8132ADC495F00B735C3 /* NaverAPI.swift */; };
 		CB5CB8162ADCCB2D00B735C3 /* DataScannerViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CB8152ADCCB2D00B735C3 /* DataScannerViewController+.swift */; };
+		CB5CB8182ADCCCBD00B735C3 /* PapagoTranslationLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CB8172ADCCCBD00B735C3 /* PapagoTranslationLanguage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		CB5CB8102ADC456600B735C3 /* TranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationService.swift; sourceTree = "<group>"; };
 		CB5CB8132ADC495F00B735C3 /* NaverAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverAPI.swift; sourceTree = "<group>"; };
 		CB5CB8152ADCCB2D00B735C3 /* DataScannerViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataScannerViewController+.swift"; sourceTree = "<group>"; };
+		CB5CB8172ADCCCBD00B735C3 /* PapagoTranslationLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapagoTranslationLanguage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 			children = (
 				CB5CB8092ADC200D00B735C3 /* PapagoTranslation.swift */,
 				CB5CB80B2ADC203C00B735C3 /* PapagoDetectLanguage.swift */,
+				CB5CB8172ADCCCBD00B735C3 /* PapagoTranslationLanguage.swift */,
 			);
 			path = Papago;
 			sourceTree = "<group>";
@@ -239,6 +242,7 @@
 				CB5CB80C2ADC203C00B735C3 /* PapagoDetectLanguage.swift in Sources */,
 				CB5CB7892AD6DE4E00B735C3 /* AppDelegate.swift in Sources */,
 				CB5CB80A2ADC200D00B735C3 /* PapagoTranslation.swift in Sources */,
+				CB5CB8182ADCCCBD00B735C3 /* PapagoTranslationLanguage.swift in Sources */,
 				CB5CB8112ADC456600B735C3 /* TranslationService.swift in Sources */,
 				CB5CB78B2AD6DE4E00B735C3 /* SceneDelegate.swift in Sources */,
 			);
