@@ -11,7 +11,7 @@ import VisionKit
 final class TranslationViewController: UIViewController {
     private let translationService: TranslationService
     private var flashState: Bool = false
-    private var scanningState: Bool = false
+    private var scanningState: Bool = true
     
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -217,22 +217,39 @@ final class TranslationViewController: UIViewController {
         flashState.toggle()
         
         if flashState {
-            toggleFlashButton.setImage(UIImage(systemName: "bolt.fill"), for: .normal)
+            turnOnFlash()
         } else {
-            toggleFlashButton.setImage(UIImage(systemName: "bolt.slash.fill"), for: .normal)
+            turnOffFlash()
         }
+    }
+    
+    private func turnOnFlash() {
+        toggleFlashButton.setImage(UIImage(systemName: "bolt.fill"), for: .normal)
+    }
+    
+    private func turnOffFlash() {
+        toggleFlashButton.setImage(UIImage(systemName: "bolt.slash.fill"), for: .normal)
     }
     
     private func toggleScanning() {
         scanningState.toggle()
         
         if scanningState {
-            toggleScanningButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
-            dataScanner.stopScanning()
+            startScanning()
         } else {
-            toggleScanningButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
-            try? dataScanner.startScanning()
+            stopScanning()
         }
+    }
+    
+    private func startScanning() {
+        try? dataScanner.startScanning()
+        toggleScanningButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+    }
+    
+    private func stopScanning() {
+        dataScanner.stopScanning()
+        toggleScanningButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+        
     }
 }
 
