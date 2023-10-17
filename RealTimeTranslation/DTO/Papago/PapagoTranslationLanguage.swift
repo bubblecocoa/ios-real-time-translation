@@ -41,29 +41,29 @@ enum PapagoTranslationLanguage: String, Decodable, CaseIterable {
         case .ko:
             return "한국어"
         case .en:
-            return "English"
+            return "영어"
         case .ja:
-            return "日本語"
+            return "일본어"
         case .zhCN:
-            return "簡體字"
+            return "중국어 간체"
         case .zhTW:
-            return "繁体字"
+            return "중국어 번체"
         case .vi:
-            return "Tiếng Việt"
+            return "베트남어"
         case .id:
-            return "Bahasa Indonesia"
+            return "인도네시아어"
         case .th:
-            return "ภาษาไทย"
+            return "태국어"
         case .de:
-            return "Deutsch"
+            return "독일어"
         case .ru:
-            return "Русский"
+            return "러시아어"
         case .es:
-            return "Español"
+            return "스페인어"
         case .it:
-            return "Italiano"
+            return "이탈리아어"
         case .fr:
-            return "Français"
+            return "프랑스어"
         }
     }
 }
