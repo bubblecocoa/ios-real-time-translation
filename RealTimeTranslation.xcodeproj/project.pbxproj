@@ -76,6 +76,7 @@
 				CB5CB7FE2ADBE42D00B735C3 /* NaverAPIKey.plist */,
 				CB5CB8022ADC1E9900B735C3 /* App */,
 				CB5CB8032ADC1ED200B735C3 /* ViewController */,
+				CB5CB80F2ADC455100B735C3 /* Service */,
 				CB5CB8072ADC1FA400B735C3 /* DTO */,
 				CB5CB8042ADC1EE800B735C3 /* View */,
 				CB5CB8122ADC492F00B735C3 /* NameSpace */,
@@ -98,7 +99,6 @@
 			isa = PBXGroup;
 			children = (
 				CB5CB78C2AD6DE4E00B735C3 /* TranslationViewController.swift */,
-				CB5CB80F2ADC455100B735C3 /* Service */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
