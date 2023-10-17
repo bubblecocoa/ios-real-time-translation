@@ -5,7 +5,6 @@
 //  Created by BMO on 2023/10/17.
 //
 
-import UIKit
 import VisionKit
 
 final class ModalViewController: UIViewController {

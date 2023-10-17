@@ -70,7 +70,6 @@ final class TranslationService {
 
             do {
                 let translation = try jsonDecoder.decode(PapagoTranslation.self, from: data)
-                print("번역 결과 : \(translation.message.result.translatedText)")
                 complition(translation)
             } catch {
                 print(error)
@@ -119,7 +118,6 @@ final class TranslationService {
             do {
                 let detectLanguage = try jsonDecoder.decode(PapagoDetectLanguage.self, from: data)
                 // FIXME: 감지 언어 18개, 번역 언어 13개. 5가지 차이에 의해 에러가 발생할 수 있음.
-                print("감지 언어 : \(detectLanguage.languageCode)")
                 complition(detectLanguage.languageCode)
             } catch {
                 print(error)

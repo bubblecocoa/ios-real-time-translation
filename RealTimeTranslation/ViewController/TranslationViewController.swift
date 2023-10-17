@@ -5,7 +5,6 @@
 //  Created by BMO on 2023/10/11.
 //
 
-import UIKit
 import VisionKit
 
 final class TranslationViewController: UIViewController {
@@ -279,7 +278,6 @@ extension TranslationViewController: DataScannerViewControllerDelegate {
     ) {
         switch item {
         case .text(let text):
-            print("text: \(text.transcript)")
             let modal = ModalViewController(translationService: translationService, sourceText: text, targetLanguage: targetLanguage)
             self.present(modal, animated: true)
         default:
