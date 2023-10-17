@@ -18,7 +18,8 @@ final class TranslationViewController: UIViewController {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = 8
+        stackView.spacing = 16
+        stackView.alignment = .center
         
         stackView.backgroundColor = .black
         
@@ -131,15 +132,12 @@ final class TranslationViewController: UIViewController {
         NSLayoutConstraint.activate([
             dataScanner.view.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             dataScanner.view.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-            dataScanner.view.topAnchor.constraint(equalTo: mainStackView.topAnchor),
-            dataScanner.view.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor, constant: -16)
+            dataScanner.view.topAnchor.constraint(equalTo: mainStackView.topAnchor)
         ])
         
         // buttonStackView
         NSLayoutConstraint.activate([
-            buttonStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: 16),
-            buttonStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -16),
-            buttonStackView.bottomAnchor.constraint(equalTo: mainStackView.bottomAnchor),
+            buttonStackView.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 1, constant: -32),
             buttonStackView.heightAnchor.constraint(equalToConstant: 50)
         ])
         
