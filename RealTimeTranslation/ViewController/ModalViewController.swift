@@ -65,8 +65,7 @@ final class ModalViewController: UIViewController {
         }
         
         setUI()
-        sourceLabel.text = sourceText.transcript
-        translationService.applyTranslation(sourceText.transcript, targetLanguage: targetLanguage, to: translatedLabel)
+        setLabelText()
     }
     
     private func setUI() {
@@ -87,5 +86,10 @@ final class ModalViewController: UIViewController {
             separator.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 1),
             separator.heightAnchor.constraint(equalToConstant: 0.5)
         ])
+    }
+    
+    private func setLabelText() {
+        sourceLabel.text = sourceText.transcript
+        translationService.applyTranslation(sourceText.transcript, targetLanguage: targetLanguage, to: translatedLabel)
     }
 }
