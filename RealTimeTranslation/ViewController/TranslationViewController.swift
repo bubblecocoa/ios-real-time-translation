@@ -263,7 +263,6 @@ final class TranslationViewController: UIViewController {
     private func stopScanning() {
         dataScanner.stopScanning()
         toggleScanningButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
-        
     }
 }
 
@@ -283,6 +282,8 @@ extension TranslationViewController: DataScannerViewControllerDelegate {
         switch item {
         case .text(let text):
             print("text: \(text.transcript)")
+            let modal = ModalViewController(translationService: translationService, sourceText: text, targetLanguage: targetLanguage)
+            self.present(modal, animated: true)
         default:
             print("unexpected item")
         }

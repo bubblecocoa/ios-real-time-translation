@@ -21,6 +21,7 @@
 		CB5CB8142ADC495F00B735C3 /* NaverAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CB8132ADC495F00B735C3 /* NaverAPI.swift */; };
 		CB5CB8162ADCCB2D00B735C3 /* DataScannerViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CB8152ADCCB2D00B735C3 /* DataScannerViewController+.swift */; };
 		CB5CB8182ADCCCBD00B735C3 /* PapagoTranslationLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CB8172ADCCCBD00B735C3 /* PapagoTranslationLanguage.swift */; };
+		CB5CB81A2ADE1DDC00B735C3 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CB8192ADE1DDC00B735C3 /* ModalViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		CB5CB8132ADC495F00B735C3 /* NaverAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverAPI.swift; sourceTree = "<group>"; };
 		CB5CB8152ADCCB2D00B735C3 /* DataScannerViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataScannerViewController+.swift"; sourceTree = "<group>"; };
 		CB5CB8172ADCCCBD00B735C3 /* PapagoTranslationLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapagoTranslationLanguage.swift; sourceTree = "<group>"; };
+		CB5CB8192ADE1DDC00B735C3 /* ModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				CB5CB78C2AD6DE4E00B735C3 /* TranslationViewController.swift */,
+				CB5CB8192ADE1DDC00B735C3 /* ModalViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				CB5CB8142ADC495F00B735C3 /* NaverAPI.swift in Sources */,
 				CB5CB8162ADCCB2D00B735C3 /* DataScannerViewController+.swift in Sources */,
 				CB5CB78D2AD6DE4E00B735C3 /* TranslationViewController.swift in Sources */,
+				CB5CB81A2ADE1DDC00B735C3 /* ModalViewController.swift in Sources */,
 				CB5CB8012ADBE58500B735C3 /* Bundle+.swift in Sources */,
 				CB5CB80C2ADC203C00B735C3 /* PapagoDetectLanguage.swift in Sources */,
 				CB5CB7892AD6DE4E00B735C3 /* AppDelegate.swift in Sources */,
