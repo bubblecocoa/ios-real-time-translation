@@ -15,8 +15,8 @@
 - 프로젝트를 실행하기 위해 iOS 16.0+ 이상의 실제 디바이스가 필요합니다.
 - 프로젝트 폴더 내에 `NaverAPIKey.plist` 파일을 생성해주어야 합니다.<br/>
 ![](https://github.com/bubblecocoa/storage/assets/67216784/4c4d2afb-f31f-48a4-b461-82c1fce8e272)
-- `NaverAPIKey.plist` 내에 필요한 프로퍼티는 `ClientID`, `ClientSecret`입니다.
-![](https://github.com/bubblecocoa/storage/assets/67216784/57463838-136d-478f-a157-f0b6ab0939e0)<br/>
+- `NaverAPIKey.plist` 내에 필요한 프로퍼티는 `ClientID`, `ClientSecret`입니다.<br/>
+![](https://github.com/bubblecocoa/storage/assets/67216784/57463838-136d-478f-a157-f0b6ab0939e0)
 - 각 프로퍼티에 필요한 값은 [Papago 번역 특징](https://developers.naver.com/docs/papago/papago-nmt-overview.md#papago-%EB%B2%88%EC%97%AD-%ED%8A%B9%EC%A7%95) 문서를 참고하여 발급받아 진행합니다.
 
 <a id="실행-화면"></a>
