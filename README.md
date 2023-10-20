@@ -53,6 +53,13 @@
 - 하지만 공공API, 오픈API만 사용 가능이라는 제한 상 해당 서비스는 이용할 수 없었습니다.
 - 비교에 이용된 서비스들 중 `Naver Papago`만이 `Papago 번역은 비로그인 방식 오픈 API입니다.` 라는 공식적인 설명이 있었기 때문에 최종적으로 `Papago` 서비스가 채택되었습니다.
 
+### 🚨 번역 자세히 보기
+#### 🔥 문제점
+- `DataScannerViewController`로 데이터를 스캔시 `recognizesMultipleItems`옵션을 `true`로 지정하는 경우 화면 내 모든 문자를 인식합니다.
+- 이 경우 단일 건 인식보다 문자 인식이 더 빈번하게 일어나게 되고, 사용자가 번역을 확인하기 전에 UI가 업데이트 될 수 있습니다.
+#### 🧯 해결방법
+- `DataScannerViewControllerDelegate`의 `dataScanner(_:didTapOn:)` 메서드를 이용해 인식된 문자를 터치했을 때 인식된 문자와 번역된 `sheetPresentationController`의 `detents` 옵션 값을 `[.medium()]`로 주어 화면의 절반만 차지하는 모달 시트를 띄워 원문과 번역을 동시에 볼 수 있게 했습니다.
+
 <a id="참고-링크"></a>
 
 ## 🔗 참고 링크
